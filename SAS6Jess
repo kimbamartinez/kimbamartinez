@@ -1,0 +1,54 @@
+'''clc;
+clear all;
+close all;
+% Initialize all values
+fs = 1000; % Sampling frequency
+Vc = 10; % Amplitude of the carrier signal
+fc = 5000; % Frequency of the carrier signal
+m = 0.5; % Modulation index
+fm = 500; % Frequency of the modulating signal
+t=linspace(0,5/fm,1000);
+Vm = m*Vc; % Modulating signal voltage
+% Plot the signals in the time domain
+vm=Vm*sin(2*pi*fm*t);
+vc=Vc*sin(2*pi*fc*t);
+vam=Vc*(1+m*sin(2*pi*fm*t)).*sin(2*pi*fc*t);
+figure 1
+subplot(3,2,1); 
+plot(t,vc);
+xlabel('time(s)');
+ylabel('amplitude(V)');
+title('Carrier signal, Vm');
+grid on;
+subplot(3,2,3);
+plot(t,vm);
+xlabel('time(s)');
+ylabel('amplitude(v)');
+title('Modulating signal, Vm');
+grid on;
+subplot(3,2,5);
+plot(t,vam);
+xlabel('time(s)');
+ylabel('amplitude(v)');
+title('Amplitude modulated (AM) signal, Vam');
+grid on; 
+%Plot the spectrum response of the AM signal
+c=fftshift(fft(vc,fs));
+m=fftshift(fft(vm,fs));
+am=fftshift(fft(vam,fs));
+f=-fs/2:fs/2-1;
+subplot(3,2,2);
+plot(f,abs(c));
+title('Carrier Signal Spectrum');
+axis([-100 100 0 1000]);
+grid on;
+subplot(3,2,4);
+plot(f,abs(m));
+title('Modulating Signal Spectrum');
+axis([-100 100 0 1000]);
+grid on;
+subplot(3,2,6);
+plot(f,abs(am));
+title('AM Signal Spectrum');
+axis([-100 100 0 10000]);
+grid on;
